@@ -1,10 +1,20 @@
-# Containerised distributed application
+# Prototype project for uv-managed python monorepo
 
-With backend written in both java and python, for deployment prototyping. Written some time ago and I haven't looked at it in a while.
+Adapted from previous personal protype repo for containerised deployment of applications
 
-Uploaded to GH for general availability/reference across multiple enviroments.
+Includes:
+- ui/
+    - Angular frontend application -- included for completeness from previous fork, not relevant to the prototype itself
+- api-1/
+    - A python api application  
+- api-2/
+    - Another python api application with different dependencies
+- api-java/
+    - A java api application with its own dependencies. This was in the original project not relevant to this prototype but currently left in place as an example of multi-language monorepo structure.
+    
+These will be managed by uv and containerised with their individual dependencies for deployment but we will set up the development environment to understand both of these sets of dependencies.
 
 ## Currently incomplete
 
-- python api (if i recall correctly)
-- terraform. This was started but fell by the wayside.
+- python apis
+- terraform. This was started but fell by the wayside before forking this repo. Left in place for now in case prototyping terraform with uv-managed monorepo is desired later.
