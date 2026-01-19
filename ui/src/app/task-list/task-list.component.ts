@@ -9,6 +9,7 @@ import {
 import { TaskListItemComponent } from '../task-item/task-item.component'
 import { TaskListItem } from '../model/task-item'
 import { TaskService } from '../task.service'
+import { NumberService } from '../number.service'
 import { CommonModule } from '@angular/common'
 import { StandardButtonComponent } from '../standard-button/standard-button.component'
 
@@ -27,7 +28,7 @@ import { StandardButtonComponent } from '../standard-button/standard-button.comp
             <div class="inline-block">
                 <label
                     id="hide-completed-tasks"
-                    class="font-sm mr-4 font-extralight italic"
+                    class="text-sm mr-4 font-extralight italic"
                     >Hide completed tasks</label
                 >
                 <input
@@ -72,6 +73,18 @@ import { StandardButtonComponent } from '../standard-button/standard-button.comp
                 </button>
             </div>
         </form>
+        <div class="m-2 rounded-2xl bg-emerald-500 p-4 text-right text-white">
+            <label class="text-lg font-light italic" for="generate-number-button"
+                >My favorite number is {{ myNumber }}.</label
+            >
+            <button
+                id="generate-number-button"
+                (click)="generateNumber()"
+                class="mx-4 bg-cyan-500 text-white text-sm font-semibold p-4 border-white border-2 rounded-2xl"
+            >
+                Generate a new one
+            </button>
+        </div>
     `,
   styles: ``,
 })
@@ -87,7 +100,12 @@ export class TaskListComponent implements OnInit {
   hideFinishedTasks = true
   newTaskDescription = ''
 
-  constructor(private taskService: TaskService) { }
+  myNumber = 42
+
+  constructor(
+    private taskService: TaskService,
+    private numberService: NumberService)
+  { }
 
   taskList?: TaskListItem[]
   visibleTaskList?: TaskListItem[] = []
@@ -99,6 +117,10 @@ export class TaskListComponent implements OnInit {
   async refreshTasks() {
     this.taskList = await this.taskService.getTasks()
     this.updateVisibleTaskList()
+  }
+
+  async generateNumber() {
+    this.myNumber = await this.numberService.getRandomNumber()
   }
 
   async handleAddTask() {

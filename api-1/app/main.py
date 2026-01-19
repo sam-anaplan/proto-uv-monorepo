@@ -1,12 +1,9 @@
-from typing import Generator
-
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.dto.task_dto import TaskDto
 from app.model.task_model import TaskModel
 from app.services.task_service import TaskService, get_task_service
-
 
 app = FastAPI()
 
@@ -25,13 +22,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-def get_task_service() -> Generator[TaskService, None, None]:
-    service = TaskService()
-    try: 
-        yield service
-    finally:
-        service.cleanup()
 
 def placeholder():
     return TaskDto(id="a",description="basbsd",done=False)
