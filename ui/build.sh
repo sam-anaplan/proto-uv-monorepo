@@ -1,4 +1,4 @@
-DOCKER_IMAGE_NAME="task-api"
+DOCKER_IMAGE_NAME="task-ui"
 OLD_NPM_VERSION=$(npm pkg get version | sed 's/"//g')
 
 docker buildx build -f Dockerfile-build -t $DOCKER_IMAGE_NAME-build .

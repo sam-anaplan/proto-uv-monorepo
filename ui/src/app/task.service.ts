@@ -11,7 +11,7 @@ export class TaskService {
   constructor(private httpClient: HttpClient) { }
 
   private url(path: string) {
-    return `http://localhost:8080/${path}`
+    return `http://localhost:8000/${path}`
   }
 
   async getTasks() {
@@ -24,6 +24,8 @@ export class TaskService {
     if (!taskInfo.id) {
       throw new Error('update task called with no task id')
     }
+
+    taskInfo.done = !!taskInfo.done
 
     console.log(`calling api to update task with id "${taskInfo.id}"`)
     return await firstValueFrom(
@@ -46,6 +48,7 @@ export class TaskService {
     if (!taskInfo.description) {
       throw new Error('delete task called with no task description')
     }
+    taskInfo.done = !!taskInfo.done
 
     console.log(
       `calling api to add task: with description "${taskInfo.description}"`
