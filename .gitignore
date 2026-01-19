@@ -8,3 +8,5 @@
 *java/.classpath
 **/*.tfstate
 **/*.tfstate.backup
+
+.DS_Store
