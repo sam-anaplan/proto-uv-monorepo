@@ -6,7 +6,7 @@ define uv_sync
 	@echo "----------------------------------------"
 	@echo "Syncing: $(1)"
 	@echo "----------------------------------------"
-	cd $(1) && uv sync
+	cd $(1) && uv sync --all-groups
 	@echo "Done: $(1)"
 	@echo ""
 endef
@@ -17,7 +17,7 @@ define uv_reinstall
 	@echo "----------------------------------------"
 	@echo "Reinstalling: $(1)"
 	@echo "----------------------------------------"
-	cd $(1) && uv sync --reinstall
+	cd $(1) && uv sync --reinstall --all-groups
 	@echo "Done: $(1)"
 	@echo ""
 endef
