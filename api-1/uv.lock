@@ -711,6 +711,9 @@ dependencies = [
 [package.metadata]
 requires-dist = [{ name = "pyfiglet" }]
 
+[package.metadata.requires-dev]
+dev = [{ name = "pytest" }]
+
 [[package]]
 name = "sentry-sdk"
 version = "2.49.0"
