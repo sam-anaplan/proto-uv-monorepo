@@ -72,7 +72,7 @@ sync-ui:
 	@echo "----------------------------------------"
 	@echo "Installing Node.js dependencies: ui"
 	@echo "----------------------------------------"
-	cd ui && npm ci
+	cd ui && npm install
 	@echo "Done: ui"
 	@echo ""
 
