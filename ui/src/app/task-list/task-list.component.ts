@@ -24,8 +24,12 @@ import { StandardButtonComponent } from '../standard-button/standard-button.comp
   ],
   template: `
         <div class="mb-4 rounded-lg bg-gray-900 p-4">
-            <pre class="text-green-400 text-xs font-mono overflow-x-auto">{{ figletText }}</pre>
-            <p class="text-gray-300 text-sm mt-2">{{ helloMessage }}</p>
+            <pre class="text-green-400 text-xs font-mono overflow-x-auto">
+{{ figletText }}
+{{ helloMessage }}
+$ <span class="blinking-cursor">_</span>
+
+            </pre>
         </div>
         <h2 class="text-xl font-semibold">Task List</h2>
         <div class="grid grid-cols-2">
@@ -90,7 +94,15 @@ import { StandardButtonComponent } from '../standard-button/standard-button.comp
             </button>
         </div>
     `,
-  styles: ``,
+  styles: `
+    .blinking-cursor {
+      animation: blink 1s steps(1) infinite;
+    }
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+  `,
 })
 export class TaskListComponent implements OnInit {
   private formBuilder = inject(FormBuilder)
