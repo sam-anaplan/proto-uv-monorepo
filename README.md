@@ -57,6 +57,7 @@ The project uses a Makefile to manage common tasks. Run commands from the reposi
 | `make build` | Build all Docker images (api-1, api-2, ui). |
 | `make run` | Run all containers in detached mode. |
 | `make stop` | Stop and remove all running containers. |
+| `make restart` | Restart all containers. |
 
 ### Individual targets
 

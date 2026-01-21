@@ -1,4 +1,4 @@
-.PHONY: install sync sync-packages sync-apis sync-ui clean reinstall build build-api-1 build-api-2 build-ui run run-api-1 run-api-2 run-ui stop
+.PHONY: install sync sync-packages sync-apis sync-ui clean reinstall build build-api-1 build-api-2 build-ui run run-api-1 run-api-2 run-ui stop restart
 
 # Function to sync a project
 # Usage: $(call uv_sync,directory_path)
@@ -157,3 +157,8 @@ stop:
 	-docker stop api-1 api-2 task-ui 2>/dev/null || true
 	-docker rm api-1 api-2 task-ui 2>/dev/null || true
 	@echo "All containers stopped and removed"
+
+
+restart: stop run
+	@echo "========================================"
+	@echo "All containers restarted successfully"
