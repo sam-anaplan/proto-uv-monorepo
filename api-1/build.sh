@@ -1,1 +1,1 @@
-docker build -t api-1 .
+docker build --build-context packages=../packages -t api-1 .

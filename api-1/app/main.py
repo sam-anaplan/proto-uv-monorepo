@@ -5,6 +5,8 @@ from app.dto.task_dto import TaskDto
 from app.model.task_model import TaskModel
 from app.services.task_service import TaskService, get_task_service
 
+from scwpoc.hello import get_hello
+
 app = FastAPI()
 
 origins = [
@@ -23,12 +25,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-def placeholder():
-    return TaskDto(id="a",description="basbsd",done=False)
-
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return get_hello()
 
 @app.get("/tasks")
 def get_tasks(service: TaskService = Depends(get_task_service)):

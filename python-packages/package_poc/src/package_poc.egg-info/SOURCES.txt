@@ -1,7 +1,0 @@
-README.md
-pyproject.toml
-src/stuff.py
-src/package_poc.egg-info/PKG-INFO
-src/package_poc.egg-info/SOURCES.txt
-src/package_poc.egg-info/dependency_links.txt
-src/package_poc.egg-info/top_level.txt
