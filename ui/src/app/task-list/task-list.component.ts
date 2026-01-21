@@ -23,6 +23,10 @@ import { StandardButtonComponent } from '../standard-button/standard-button.comp
     CommonModule,
   ],
   template: `
+        <div class="mb-4 rounded-lg bg-gray-900 p-4">
+            <pre class="text-green-400 text-xs font-mono overflow-x-auto">{{ figletText }}</pre>
+            <p class="text-gray-300 text-sm mt-2">{{ helloMessage }}</p>
+        </div>
         <h2 class="text-xl font-semibold">Task List</h2>
         <div class="grid grid-cols-2">
             <div class="inline-block">
@@ -102,6 +106,9 @@ export class TaskListComponent implements OnInit {
 
   myNumber = 42
 
+  figletText = ''
+  helloMessage = ''
+
   constructor(
     private taskService: TaskService,
     private numberService: NumberService)
@@ -112,6 +119,17 @@ export class TaskListComponent implements OnInit {
 
   async ngOnInit() {
     this.refreshTasks()
+    this.fetchHello()
+  }
+
+  async fetchHello() {
+    try {
+      const hello = await this.taskService.getHello()
+      this.figletText = hello.figlet
+      this.helloMessage = hello.message
+    } catch (error) {
+      console.error('Failed to fetch hello:', error)
+    }
   }
 
   async refreshTasks() {

@@ -57,4 +57,10 @@ export class TaskService {
       this.httpClient.post<TaskListItem>(this.url('task'), taskInfo)
     )
   }
+
+  async getHello(): Promise<{ message: string; figlet: string }> {
+    return await firstValueFrom(
+      this.httpClient.get<{ message: string; figlet: string }>(this.url(''))
+    )
+  }
 }
