@@ -6,7 +6,7 @@ Task management API service built with FastAPI.
 
 This service provides a REST API for managing tasks (todo items). It demonstrates:
 - FastAPI application structure with DTOs, models, and services
-- Consuming shared packages from the monorepo (`scwpoc`)
+- Consuming shared packages from the monorepo (`welcome`)
 - Independent virtual environment management with `uv`
 - Docker containerisation for deployment
 
@@ -28,7 +28,7 @@ api-1/
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/` | Returns hello message (from scwpoc package) |
+| GET | `/` | Returns hello message (from welcome package) |
 | GET | `/tasks` | List all tasks |
 | POST | `/tasks` | Create a new task |
 | DELETE | `/tasks/{id}` | Delete a task |
@@ -74,4 +74,4 @@ The API will be available at http://localhost:10667
 ## Dependencies
 
 - **fastapi[standard]** - Web framework
-- **scwpoc** - Shared package (local path dependency)
+- **welcome** - Shared package (local path dependency)

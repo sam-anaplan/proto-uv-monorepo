@@ -73,7 +73,7 @@ wheels = [
 ]
 
 [[package]]
-name = "scwpoc"
+name = "welcome"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

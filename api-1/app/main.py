@@ -5,7 +5,7 @@ from app.dto.task_dto import TaskDto
 from app.model.task_model import TaskModel
 from app.services.task_service import TaskService, get_task_service
 
-from scwpoc.hello import get_hello
+from welcome.hello import get_hello
 
 app = FastAPI()
 

@@ -6,11 +6,11 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi[standard]>=0.128.0",
-    "scwpoc"
+    "welcome"
 ]
 
 [tool.uv.sources]
-scwpoc = { path = "../packages/scwpoc", editable = true }
+welcome = { path = "../packages/welcome", editable = true }
 
 [tool.basedpyright]
-extraPaths = ["../packages/scwpoc/src"]
+extraPaths = ["../packages/welcome/src"]

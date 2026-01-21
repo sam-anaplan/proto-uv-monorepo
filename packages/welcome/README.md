@@ -1,4 +1,4 @@
-# scwpoc
+# welcome
 
 Shared Python package for the proto-uv-monorepo project.
 
@@ -9,9 +9,9 @@ This package contains shared utilities and functions used across multiple API se
 ## Architecture
 
 ```
-scwpoc/
+welcome/
 ├── src/
-│   └── scwpoc/
+│   └── welcome/
 │       ├── __init__.py
 │       └── hello.py      # Shared utility functions
 ├── tests/
@@ -26,7 +26,7 @@ This package is consumed by other projects in the monorepo (e.g., api-1) as a pa
 ```toml
 # In consumer's pyproject.toml
 [tool.uv.sources]
-scwpoc = { path = "../packages/scwpoc", editable = true }
+welcome = { path = "../packages/welcome", editable = true }
 ```
 
 ## Development

@@ -1,4 +1,4 @@
-from scwpoc.hello import get_hello
+from welcome.hello import get_hello
 
 
 def test_get_hello_returns_dict():

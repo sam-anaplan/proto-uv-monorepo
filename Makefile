@@ -59,7 +59,7 @@ sync: sync-packages sync-apis
 # Sync shared packages
 sync-packages:
 	@echo "Starting package sync..."
-	$(call uv_sync,packages/scwpoc)
+	$(call uv_sync,packages/welcome)
 
 # Sync API projects
 sync-apis:
@@ -79,7 +79,7 @@ sync-ui:
 # Clean all .venv directories and reinstall
 clean:
 	@echo "Removing all .venv directories..."
-	rm -rf api-1/.venv api-2/.venv packages/scwpoc/.venv
+	rm -rf api-1/.venv api-2/.venv packages/welcome/.venv
 	@echo "All .venv directories removed"
 	@echo ""
 	$(MAKE) sync
@@ -87,7 +87,7 @@ clean:
 # Reinstall all (keeps venvs but reinstalls packages)
 reinstall:
 	@echo "Starting full reinstall..."
-	$(call uv_reinstall,packages/scwpoc)
+	$(call uv_reinstall,packages/welcome)
 	$(call uv_reinstall,api-1)
 	$(call uv_reinstall,api-2)
 	@echo "========================================"
@@ -104,7 +104,7 @@ build: build-api-1 build-api-2 build-ui
 	@echo "All Docker images built successfully"
 	@echo "========================================"
 
-# Build api-1 (requires packages context for scwpoc dependency)
+# Build api-1 (requires packages context for welcome dependency)
 build-api-1:
 	@echo "Building api-1..."
 	cd api-1 && docker build --build-context packages=../packages -t api-1 .
