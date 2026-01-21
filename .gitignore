@@ -2,38 +2,44 @@
 **/*.log
 
 # Python
-**/__pycache__/**
+**/__pycache__/
+**/*.egg-info/
+**/.venv/
+**/dist/
+**/*.pyc
+**/*.pyo
 
 # Java
-*java/target/**
-*java/.mvn/**
-*java/.settings/**
-*java/.project
-*java/.classpath
+**/target/
+**/.mvn/
+**/.settings/
+**/.project
+**/.classpath
 
 # Terraform
 **/*.tfstate
 **/*.tfstate.backup
 
-# Compiled output
-/dist
-/tmp
-/out-tsc
-/bazel-out
-
 # Node
-/node_modules
+**/node_modules/
 npm-debug.log
 yarn-error.log
 
+# Angular
+/.angular/
+/out-tsc/
+/bazel-out/
+testem.log
+/coverage/
+/typings/
+**/.sass-cache/
+
 # IDEs and editors
 .idea/
-.project
-.classpath
 .c9/
 *.launch
-.settings/
 *.sublime-workspace
+.history/
 
 # Visual Studio Code
 .vscode/*
@@ -42,17 +48,12 @@ yarn-error.log
 !.vscode/launch.json
 !.vscode/extensions.json
 !.vscode/mcp.json
-.history/*
 
 # Miscellaneous
-/.angular/cache
-.sass-cache/
 /connect.lock
-/coverage
 /libpeerconnection.log
-testem.log
-/typings
 __screenshots__/
+/tmp/
 
 # System files
 .DS_Store
