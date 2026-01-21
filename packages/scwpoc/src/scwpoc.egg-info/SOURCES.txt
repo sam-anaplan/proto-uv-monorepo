@@ -1,7 +1,0 @@
-README.md
-pyproject.toml
-src/scwpoc/hello.py
-src/scwpoc.egg-info/PKG-INFO
-src/scwpoc.egg-info/SOURCES.txt
-src/scwpoc.egg-info/dependency_links.txt
-src/scwpoc.egg-info/top_level.txt
