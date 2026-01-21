@@ -1,0 +1,13 @@
+**/.venv/
+**/tests/
+**/__pycache__/
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+**/*.pyc
+**/*.pyo
+**/*.egg-info/
+**/.git/
+**/.gitignore
+**/*.md
+**/uv.lock
