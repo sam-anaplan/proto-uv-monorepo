@@ -13,4 +13,4 @@ dependencies = [
 welcome = { path = "../packages/welcome", editable = true }
 
 [tool.basedpyright]
-extraPaths = ["../packages/welcome/src"]
+extraPaths = ["../packages/welcome"]

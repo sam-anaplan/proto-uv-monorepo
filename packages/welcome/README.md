@@ -10,10 +10,9 @@ This package contains shared utilities and functions used across multiple API se
 
 ```
 welcome/
-├── src/
-│   └── welcome/
-│       ├── __init__.py
-│       └── hello.py      # Shared utility functions
+├── welcome/
+│   ├── __init__.py
+│   └── hello.py      # Shared utility functions
 ├── tests/
 │   └── test_hello.py     # Unit tests
 └── pyproject.toml        # Package configuration

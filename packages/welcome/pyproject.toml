@@ -6,6 +6,10 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = ["pyfiglet"]
 
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [dependency-groups]
 dev = ["pytest"]
 
