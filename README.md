@@ -17,10 +17,14 @@ The applications are containerised using docker for deployment.
     - Another python api application with different dependencies
     - `pyproject.toml` defines its dependencies independently of other applications
 - `packages/`
-    - Shared python packages used by the api applications
-- `api-java/`
-    - A java api application with its own dependencies. This was in the original project not relevant to this prototype but currently left in place as an example of multi-language monorepo structure.
-    - At the moment this is here for reference purposes and not included in the build scripts.
+    - Shared python packages used by the api application
+- unused/incomplete for this prototype:
+    - These are not relevant for the purposes of this prototype at the moment but were in the original project this was forked from.
+    - They are left in place as reference and in case it may be useful to include them in the prototype in future
+    - `api-java/`
+        - A java api application with its own dependencies.
+    - `terraform/`
+        - This was started but unfinished and fell by the wayside long before forking this repo. Left in place for now in case prototyping terraform with uv-managed monorepo is desired later.
     
 ## Environment setup
 
@@ -94,6 +98,3 @@ You can also build or run individual components:
     - **api-1**: http://localhost:10667
     - **api-2**: http://localhost:10668
 
-## Currently incomplete
-
-- terraform. This was started but fell by the wayside before forking this repo. Left in place for now in case prototyping terraform with uv-managed monorepo is desired later.
