@@ -20,51 +20,71 @@ The applications are containerised using docker for deployment.
     - Shared python packages used by the api applications
 - `api-java/`
     - A java api application with its own dependencies. This was in the original project not relevant to this prototype but currently left in place as an example of multi-language monorepo structure.
-    - At the moment this is here for reference purposes and not included in the build/makefile scripts.
+    - At the moment this is here for reference purposes and not included in the build scripts.
     
 ## Environment setup
-- Install uv: https://uv.dev/docs/getting-started/installation
-    - The recommended way is to use the install script as this allows it to self-manage updates
-- Install python 3.12
-- Install docker: https://docs.docker.com/get-docker/
 
-### (Optional) for dev setup
-- Install nodejs and npm if you want to run the ui application: https://nodejs.org/en/download/
-    - [Install nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#install--update-script) to manage node versions
-    - Then use nvm to install nodejs version 24:
-    ```
-    nvm install 24
-    nvm use 24
-    ```
-- Use/review the install makefile target to set up python virtual environments and install dependencies using `uv` tool and install node.js dependencies using `npm` for the ui application.
-    - From the root of the repo, run:
-    ```
-    make install
-    ```
+### Using mise (recommended)
+
+[mise](https://mise.jdx.dev/) manages tool versions and provides task automation.
+
+1. Install mise: hhttps://mise.jdx.dev/getting-started.htmltps://mise.jdx.dev/getting-started.html
+2. From the repo root, run:
+   ```bash
+   mise trust
+   mise install
+   ```
+
+This will install the correct versions of Python, Node.js, and uv automatically.
+
+### Manual setup
+
+If not using mise, install the following manually:
+- **uv**: https://docs.astral.sh/uv/getting-started/installation/
+- **Python 3.12**
+- **Node.js 24** (for UI development)
+- **Docker**: https://docs.docker.com/get-docker/
 
 ## Building and running the applications
 
-The project uses a Makefile to manage common tasks. Run commands from the repository root.
+The project uses `mise` for task automation.
 
-### Make targets
+### Quick start
+
+```bash
+mise run install    # Install all dependencies
+mise run build      # Build all Docker images
+mise run run        # Start all containers
+```
+
+### Available tasks
+
+Run `mise tasks` to see all available tasks, or use:
 
 | Command | Description |
 |---------|-------------|
-| `make install` | Install all dependencies (Python and Node.js). Runs `sync` and `sync-ui`. |
-| `make sync` | Sync all Python virtual environments. Syncs packages first, then APIs that depend on them. |
-| `make clean` | Remove all `.venv` directories and reinstall fresh. |
-| `make reinstall` | Reinstall all packages without removing venvs (uses `--reinstall` flag). |
-| `make build` | Build all Docker images (api-1, api-2, ui). |
-| `make run` | Run all containers in detached mode. |
-| `make stop` | Stop and remove all running containers. |
-| `make restart` | Restart all containers. |
+| `mise run install` | Install all dependencies (Python and Node.js) |
+| `mise run sync` | Sync all Python virtual environments |
+| `mise run clean` | Remove all `.venv` directories and reinstall fresh |
+| `mise run reinstall` | Reinstall all packages without removing venvs |
+| `mise run build` | Build all Docker images (api-1, api-2, ui) |
+| `mise run run` | Run all containers in detached mode |
+| `mise run stop` | Stop and remove all running containers |
+| `mise run restart` | Restart all containers |
+| `mise run test` | Run all tests |
 
-### Individual targets
+### Individual tasks
 
 You can also build or run individual components:
-- `make build-api-1`, `make build-api-2`, `make build-ui`
-- `make run-api-1`, `make run-api-2`, `make run-ui`
-- `make sync-packages`, `make sync-apis`, `make sync-ui`
+- `mise run build-api-1`, `mise run build-api-2`, `mise run build-ui`
+- `mise run run-api-1`, `mise run run-api-2`, `mise run run-ui`
+- `mise run sync-packages`, `mise run sync-api-1`, `mise run sync-api-2`, `mise run sync-ui`
+
+### Development mode
+
+- `mise run dev-api-1` - Run api-1 with hot reload
+- `mise run dev-api-2` - Run api-2 with hot reload
+- `mise run dev-ui` - Run UI dev server
 
 ### Accessing the applications
 

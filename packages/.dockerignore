@@ -9,5 +9,4 @@
 **/*.egg-info/
 **/.git/
 **/.gitignore
-**/*.md
 **/uv.lock

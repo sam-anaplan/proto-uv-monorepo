@@ -1,0 +1,261 @@
+# Mise configuration for proto-uv-monorepo
+# Run `mise install` to set up all tools
+# Run `mise tasks` to see available tasks
+
+[tools]
+python = "3.12"
+node = "24"
+uv = "latest"
+
+[env]
+# Ensure consistent uv behavior
+UV_LINK_MODE = "copy"
+
+# ======================
+# Install / Sync Tasks
+# ======================
+
+[tasks.install]
+description = "Install all dependencies (Python and Node.js)"
+depends = ["sync", "sync-ui"]
+run = """
+echo "========================================"
+echo "All dependencies installed successfully"
+echo "========================================"
+"""
+
+[tasks.sync]
+description = "Sync all Python projects"
+depends = ["sync-packages", "sync-apis"]
+run = """
+echo "========================================"
+echo "All Python projects synced successfully"
+echo "========================================"
+"""
+
+[tasks.sync-packages]
+description = "Sync shared packages"
+run = """
+echo "----------------------------------------"
+echo "Syncing: packages/welcome"
+echo "----------------------------------------"
+cd packages/welcome && uv sync --all-groups
+echo "Done: packages/welcome"
+"""
+
+[tasks.sync-apis]
+description = "Sync API projects"
+depends = ["sync-api-1", "sync-api-2"]
+
+[tasks.sync-api-1]
+description = "Sync api-1"
+run = """
+echo "----------------------------------------"
+echo "Syncing: api-1"
+echo "----------------------------------------"
+cd api-1 && uv sync --all-groups
+echo "Done: api-1"
+"""
+
+[tasks.sync-api-2]
+description = "Sync api-2"
+run = """
+echo "----------------------------------------"
+echo "Syncing: api-2"
+echo "----------------------------------------"
+cd api-2 && uv sync --all-groups
+echo "Done: api-2"
+"""
+
+[tasks.sync-ui]
+description = "Install Node.js dependencies for UI"
+run = """
+echo "----------------------------------------"
+echo "Installing Node.js dependencies: ui"
+echo "----------------------------------------"
+cd ui && npm install
+echo "Done: ui"
+"""
+
+# ======================
+# Clean / Reinstall
+# ======================
+
+[tasks.clean]
+description = "Remove all .venv directories and reinstall"
+run = """
+echo "Removing all .venv directories..."
+rm -rf api-1/.venv api-2/.venv packages/welcome/.venv
+echo "All .venv directories removed"
+"""
+depends = ["_clean-sync"]
+
+[tasks._clean-sync]
+description = "Internal: sync after clean"
+depends = ["sync"]
+run = ""
+
+[tasks.reinstall]
+description = "Reinstall all packages (keeps venvs)"
+run = """
+echo "Starting full reinstall..."
+echo "----------------------------------------"
+echo "Reinstalling: packages/welcome"
+echo "----------------------------------------"
+cd packages/welcome && uv sync --reinstall --all-groups
+echo "Done: packages/welcome"
+
+echo "----------------------------------------"
+echo "Reinstalling: api-1"
+echo "----------------------------------------"
+cd api-1 && uv sync --reinstall --all-groups
+echo "Done: api-1"
+
+echo "----------------------------------------"
+echo "Reinstalling: api-2"
+echo "----------------------------------------"
+cd api-2 && uv sync --reinstall --all-groups
+echo "Done: api-2"
+
+echo "========================================"
+echo "All projects reinstalled successfully"
+echo "========================================"
+"""
+
+# ======================
+# Docker Build Tasks
+# ======================
+
+[tasks.build]
+description = "Build all Docker images"
+depends = ["build-api-1", "build-api-2", "build-ui"]
+run = """
+echo "========================================"
+echo "All Docker images built successfully"
+echo "========================================"
+"""
+
+[tasks.build-api-1]
+description = "Build api-1 Docker image"
+run = """
+echo "----------------------------------------"
+echo "Building Docker image: api-1"
+echo "----------------------------------------"
+cd api-1 && docker build --build-context packages=../packages -t api-1 .
+echo "Done: api-1"
+"""
+
+[tasks.build-api-2]
+description = "Build api-2 Docker image"
+run = """
+echo "----------------------------------------"
+echo "Building Docker image: api-2"
+echo "----------------------------------------"
+cd api-2 && docker build -t api-2 .
+echo "Done: api-2"
+"""
+
+[tasks.build-ui]
+description = "Build UI Docker images (two-stage)"
+run = """
+echo "----------------------------------------"
+echo "Building Docker image: task-ui"
+echo "----------------------------------------"
+cd ui && docker buildx build -f Dockerfile-build -t task-ui-build .
+cd ui && docker buildx build -f Dockerfile-deploy -t task-ui .
+echo "Done: task-ui"
+"""
+
+# ======================
+# Docker Run Tasks
+# ======================
+
+[tasks.run]
+description = "Run all containers"
+depends = ["run-api-1", "run-api-2", "run-ui"]
+run = """
+echo "========================================"
+echo "All containers started"
+echo "  api-1:   http://localhost:10667"
+echo "  api-2:   http://localhost:10668"
+echo "  ui:      http://localhost:10666"
+echo "========================================"
+echo "Access the UI application at http://localhost:10666/task-list"
+"""
+
+[tasks.run-api-1]
+description = "Run api-1 container"
+run = """
+echo "----------------------------------------"
+echo "Running container: api-1 on port 10667"
+echo "----------------------------------------"
+docker run -d --name api-1 -p 10667:80 api-1
+echo "Done: api-1"
+"""
+
+[tasks.run-api-2]
+description = "Run api-2 container"
+run = """
+echo "----------------------------------------"
+echo "Running container: api-2 on port 10668"
+echo "----------------------------------------"
+docker run -d --name api-2 -p 10668:80 api-2
+echo "Done: api-2"
+"""
+
+[tasks.run-ui]
+description = "Run UI container"
+run = """
+echo "----------------------------------------"
+echo "Running container: task-ui on port 10666"
+echo "----------------------------------------"
+docker run -d --name task-ui -p 10666:80 task-ui
+echo "Done: task-ui"
+"""
+
+# ======================
+# Docker Stop/Restart
+# ======================
+
+[tasks.stop]
+description = "Stop and remove all containers"
+run = """
+echo "Stopping and removing containers..."
+docker stop api-1 api-2 task-ui 2>/dev/null || true
+docker rm api-1 api-2 task-ui 2>/dev/null || true
+echo "All containers stopped and removed"
+"""
+
+[tasks.restart]
+description = "Restart all containers"
+depends = ["stop", "run"]
+run = """
+echo "========================================"
+echo "All containers restarted successfully"
+echo "========================================"
+"""
+
+# ======================
+# Development Tasks
+# ======================
+
+[tasks.dev-api-1]
+description = "Run api-1 in development mode"
+run = "cd api-1 && uv run fastapi dev"
+
+[tasks.dev-api-2]
+description = "Run api-2 in development mode"
+run = "cd api-2 && uv run fastapi dev"
+
+[tasks.dev-ui]
+description = "Run UI in development mode"
+run = "cd ui && npm start"
+
+[tasks.test]
+description = "Run all tests"
+depends = ["test-welcome"]
+run = "echo 'All tests completed'"
+
+[tasks.test-welcome]
+description = "Run welcome package tests"
+run = "cd packages/welcome && uv run pytest -v"
