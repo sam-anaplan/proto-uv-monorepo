@@ -228,11 +228,9 @@ echo "All containers stopped and removed"
 
 [tasks.restart]
 description = "Restart all containers"
-depends = ["down", "up"]
 run = """
-echo "========================================"
-echo "All containers restarted successfully"
-echo "========================================"
+mise run down
+mise run up
 """
 
 # ======================
