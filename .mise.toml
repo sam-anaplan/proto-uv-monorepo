@@ -127,11 +127,39 @@ echo "========================================"
 # ======================
 
 [tasks.build]
-description = "Build all Docker images"
+depends = ["build-wheels"]
+run = """
+mise run build-images
+echo "========================================"
+echo "all package wheels and docker images built successfully"
+echo "========================================"
+"""
+
+[tasks.build-wheels]
+description = "build all package wheels"
+depends = ["build-welcome-wheel"]
+run = """
+echo "========================================"
+echo "all package wheels built successfully"
+echo "========================================"
+"""
+
+[tasks.build-welcome-wheel]
+description = "build welcome package wheel"
+run = """
+echo "----------------------------------------"
+echo "Building package wheel: welcome"
+echo "----------------------------------------"
+cd packages/welcome
+uv build --wheel
+"""
+
+[tasks.build-images]
+description = "build all docker images"
 depends = ["build-api-1", "build-api-2", "build-ui"]
 run = """
 echo "========================================"
-echo "All Docker images built successfully"
+echo "all docker images built successfully"
 echo "========================================"
 """
 
@@ -141,7 +169,10 @@ run = """
 echo "----------------------------------------"
 echo "Building Docker image: api-1"
 echo "----------------------------------------"
-cd api-1 && docker build --build-context packages=../packages -t api-1 .
+cp packages/welcome/dist/welcome-0.1.0-py3-none-any.whl api-1
+cd api-1
+uv build --wheel
+docker build --build-context packages=../packages -t api-1 .
 echo "Done: api-1"
 """
 

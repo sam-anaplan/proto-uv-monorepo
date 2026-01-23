@@ -6,8 +6,10 @@
 **/*.egg-info/
 **/.venv/
 **/dist/
+**/build/
 **/*.pyc
 **/*.pyo
+**/*.whl
 
 # Java
 **/target/

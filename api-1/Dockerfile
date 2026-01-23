@@ -4,17 +4,17 @@ FROM python:3.12-slim
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 # Copy the application into the container
-COPY --from=packages welcome /packages/welcome
-COPY . /app
+COPY *.whl ./
+COPY dist/*.whl ./
 
-# Install the application dependencies.
-WORKDIR /app
-RUN uv sync --frozen --no-cache
-# The command 'uv sync --frozen --no-cache' uses the 'uv' tool to install the Python dependencies
-# specified in the application's dependency files (like requirements.txt or pyproject.toml).
-# The '--frozen' flag ensures that the exact versions of the dependencies are installed as specified,
-# preventing any automatic upgrades. The '--no-cache' flag disables the use of any cached packages,
-# ensuring that the latest versions are fetched from the package index.
+COPY pyproject.toml uv.lock ./
 
-# Run the application.
-CMD ["/app/.venv/bin/fastapi", "run", "app/main.py", "--port", "80", "--host", "0.0.0.0"]
+# Export dependencies from lock file (ensures same versions as dev)
+RUN uv export --frozen --no-emit-project --no-sources > requirements.txt
+
+RUN uv pip install --system -r requirements.txt
+
+RUN uv pip install --system ./*.whl
+
+# Run the application (using module path since app is installed from wheel)
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]

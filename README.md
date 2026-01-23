@@ -80,6 +80,7 @@ Run `mise tasks` to see all available tasks, or use:
 ### Individual tasks
 
 You can also build or run individual components:
+- `mise run build-wheels`, `mise run build-welcome-wheel`, `mise run build-images`
 - `mise run build-api-1`, `mise run build-api-2`, `mise run build-ui`
 - `mise run up-api-1`, `mise run up-api-2`, `mise run up-ui`
 - `mise run sync-packages`, `mise run sync-api-1`, `mise run sync-api-2`, `mise run sync-ui`
