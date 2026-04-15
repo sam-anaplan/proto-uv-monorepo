@@ -1,31 +1,25 @@
 # Prototype project for uv-managed python monorepo
 
-Adapted from previous personal protype repo for containerised deployment of applications.
+Adapted from previous personal prototype repo for containerised deployment of applications.
 
 ## Overview
-This is a prototype monorepo project to demonstrate use of `uv` tool to manage multiple python applications with different dependencies in a single repository.
 
-The applications are containerised using docker for deployment.
+This is a prototype monorepo project to demonstrate use of `uv` to manage multiple python applications with different dependencies in a single repository.
+
+Applications are containerised with Docker and deployed to a local Kubernetes cluster using [kind](https://kind.sigs.k8s.io/) and [Helm](https://helm.sh/).
 
 ## Structure
-- `ui/`
-    - Angular frontend application -- included for completeness from previous fork, not relevant to the prototype itself
-- `api-1/`
-    - A python api application  
-    - `pyproject.toml` defines its dependencies independently of other applications
-- `api-2/`
-    - Another python api application with different dependencies
-    - `pyproject.toml` defines its dependencies independently of other applications
-- `packages/`
-    - Shared python packages used by the api application
-- unused/incomplete for this prototype:
-    - These are not relevant for the purposes of this prototype at the moment but were in the original project this was forked from.
-    - They are left in place as reference and in case it may be useful to include them in the prototype in future
-    - `api-java/`
-        - A java api application with its own dependencies.
-    - `terraform/`
-        - This was started but unfinished and fell by the wayside long before forking this repo. Left in place for now in case prototyping terraform with uv-managed monorepo is desired later.
-    
+
+- `ui/` — Angular frontend application
+- `api-1/` — Python API application (`pyproject.toml` defines its dependencies independently)
+- `api-2/` — Another Python API application with different dependencies
+- `packages/` — Shared python packages used by the API applications
+- `helm/uv-monorepo/` — Helm chart for Kubernetes deployment
+- `kind-config.yaml` — kind cluster configuration with port mappings
+- Unused/incomplete (left from the original fork for reference):
+    - `api-java/` — A java api application
+    - `terraform/` — Incomplete, left in case it's useful later
+
 ## Environment setup
 
 ### Using mise (recommended)
@@ -39,7 +33,7 @@ The applications are containerised using docker for deployment.
    mise install
    ```
 
-This will install the correct versions of Python, Node.js, and uv automatically.
+This will install the correct versions of Python, Node.js, uv, kubectl, kind, and helm automatically.
 
 ### Manual setup
 
@@ -48,22 +42,25 @@ If not using mise, install the following manually:
 - **Python 3.12**
 - **Node.js 24** (for UI development)
 - **Docker**: https://docs.docker.com/get-docker/
+- **kubectl**: https://kubernetes.io/docs/tasks/tools/
+- **kind**: https://kind.sigs.k8s.io/docs/user/quick-start/#installation
+- **helm**: https://helm.sh/docs/intro/install/
 
-## Building and running the applications
+## Building and deploying
 
-The project uses `mise` for task automation.
+The project uses `mise` for task automation. Run `mise tasks` to see all available tasks.
 
 ### Quick start
 
 ```bash
-mise run setup      # Install all dependencies
-mise run build      # Build all Docker images
-mise run up         # Start all containers
+mise run setup          # Install all dependencies
+mise run build          # Build all Docker images
+mise run k8s-create     # Create the kind cluster
+mise run k8s-load       # Load images into kind
+mise run k8s-deploy     # Deploy via Helm
 ```
 
 ### Available tasks
-
-Run `mise tasks` to see all available tasks, or use:
 
 | Command | Description |
 |---------|-------------|
@@ -72,30 +69,28 @@ Run `mise tasks` to see all available tasks, or use:
 | `mise run clean` | Remove all `.venv` directories and reinstall fresh |
 | `mise run reinstall` | Reinstall all packages without removing venvs |
 | `mise run build` | Build all Docker images (api-1, api-2, ui) |
-| `mise run up` | Start all containers in detached mode |
-| `mise run down` | Stop and remove all running containers |
-| `mise run restart` | Restart all containers |
 | `mise run test` | Run all tests |
+| `mise run k8s-create` | Create the kind cluster |
+| `mise run k8s-load` | Load Docker images into the kind cluster |
+| `mise run k8s-deploy` | Deploy (or upgrade) to Kubernetes via Helm |
+| `mise run k8s-status` | Show pod and service status |
+| `mise run k8s-teardown` | Uninstall the Helm release |
 
-### Individual tasks
+### Build tasks
 
-You can also build or run individual components:
+You can build individual components:
 - `mise run build-wheels`, `mise run build-welcome-wheel`, `mise run build-images`
 - `mise run build-api-1`, `mise run build-api-2`, `mise run build-ui`
-- `mise run up-api-1`, `mise run up-api-2`, `mise run up-ui`
+
+Sync individual projects:
 - `mise run sync-packages`, `mise run sync-api-1`, `mise run sync-api-2`, `mise run sync-ui`
-
-### Development mode
-
-- `mise run dev-api-1` - Run api-1 with hot reload
-- `mise run dev-api-2` - Run api-2 with hot reload
-- `mise run dev-ui` - Run UI dev server
 
 ### Accessing the applications
 
-- The ui application will be accessible in a browser at:
-    - http://localhost:10666/task-list
-- The api applications will be accessible at:
-    - **api-1**: http://localhost:10667
-    - **api-2**: http://localhost:10668
+Once deployed, the applications are accessible at:
+- **UI**: http://localhost:10666/task-list
+- **api-1**: http://localhost:10667 (direct, for debugging)
+- **api-2**: http://localhost:10668 (direct, for debugging)
+
+The UI's nginx reverse proxy routes `/api/tasks/*` to api-1 and `/api/numbers/*` to api-2 within the cluster, so the browser only needs to talk to the UI on port 10666.
 
