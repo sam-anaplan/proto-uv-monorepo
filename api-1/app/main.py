@@ -45,7 +45,7 @@ def get_task(
 
     return result.to_dto().__dict__
 
-@app.put("/task/")
+@app.put("/task")
 def update_task(
         taskDto: TaskDto,
         service: TaskService = Depends(get_task_service)) :
@@ -54,7 +54,7 @@ def update_task(
     updatedTask = TaskModel(id=taskDto.id, description=taskDto.description, done=taskDto.done)
     service.update_task(updatedTask)
 
-@app.post("/task/")
+@app.post("/task")
 def create_task(
         taskDto: TaskDto,
         service: TaskService = Depends(get_task_service)) :

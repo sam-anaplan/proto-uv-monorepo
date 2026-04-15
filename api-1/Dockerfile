@@ -10,7 +10,7 @@ COPY dist/*.whl ./
 COPY pyproject.toml uv.lock ./
 
 # Export dependencies from lock file (ensures same versions as dev)
-RUN uv export --frozen --no-emit-project --no-sources > requirements.txt
+RUN uv export --frozen --no-emit-project > requirements.txt
 
 RUN uv pip install --system -r requirements.txt
 

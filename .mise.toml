@@ -292,13 +292,25 @@ run = "echo 'All tests completed'"
 description = "Run welcome package tests"
 run = "cd packages/welcome && uv run pytest -v"
 
-[tasks.k8s-create-cluster]
+[tasks.k8s-create]
 description = "Create kubernetes cluster"
 run = """
 kind create cluster --name uv-monorepo --config kind-config.yaml
 kubectl cluster-info --context kind-uv-monorepo
 """
 
-[tasks.k8s-load-containers]
+[tasks.k8s-load]
 description = "Load docker images into kind cluster"
 run = "kind load docker-image api-1 api-2 task-ui --name uv-monorepo"
+
+[tasks.k8s-deploy]
+description = "Deploy to Kubernetes via Helm"
+run = "helm upgrade --install uv-monorepo helm/uv-monorepo"
+
+[tasks.k8s-teardown]
+description = "Uninstall Helm release"
+run = "helm uninstall uv-monorepo"
+
+[tasks.k8s-status]
+description = "Show pod and service status"
+run = "kubectl get pods,services"
