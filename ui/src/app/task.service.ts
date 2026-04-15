@@ -11,7 +11,7 @@ export class TaskService {
   constructor(private httpClient: HttpClient) { }
 
   private url(path: string) {
-    return `http://localhost:10667/${path}`
+    return `/api/tasks/${path}`
   }
 
   async getTasks() {

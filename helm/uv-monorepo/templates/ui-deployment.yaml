@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.ui.name }}
+  labels:
+    {{- include "uv-monorepo.labels" . | nindent 4 }}
+    {{- include "uv-monorepo.selectorLabels" .Values.ui.name | nindent 4 }}
+spec:
+  replicas: {{ .Values.ui.replicas }}
+  selector:
+    matchLabels:
+      {{- include "uv-monorepo.selectorLabels" .Values.ui.name | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "uv-monorepo.selectorLabels" .Values.ui.name | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Values.ui.name }}
+          image: "{{ .Values.ui.image }}:{{ .Values.ui.tag }}"
+          imagePullPolicy: Never
+          ports:
+            - containerPort: {{ .Values.ui.port }}
+          resources:
+            {{- toYaml .Values.ui.resources | nindent 12 }}
+          volumeMounts:
+            - name: nginx-config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+              readOnly: true
+          livenessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.ui.port }}
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.ui.port }}
+            initialDelaySeconds: 2
+            periodSeconds: 5
+      volumes:
+        - name: nginx-config
+          configMap:
+            name: {{ .Values.ui.name }}-nginx-config

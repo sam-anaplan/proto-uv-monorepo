@@ -11,7 +11,7 @@ export class NumberService {
   constructor(private httpClient: HttpClient) { }
 
   private url(path: string) {
-    return `http://localhost:10668/${path}`
+    return `/api/numbers/${path}`
   }
 
   async getRandomNumber() {

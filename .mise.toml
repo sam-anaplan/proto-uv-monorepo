@@ -3,6 +3,9 @@
 # Run `mise tasks` to see available tasks
 
 [tools]
+kubectl = "latest"
+kind = "latest"
+helm = "latest"
 python = "3.12"
 node = "24"
 uv = "latest"
@@ -193,7 +196,7 @@ echo "----------------------------------------"
 echo "Building Docker image: task-ui"
 echo "----------------------------------------"
 cd ui && docker buildx build -f Dockerfile-build -t task-ui-build .
-cd ui && docker buildx build -f Dockerfile-deploy -t task-ui .
+cd ../ui && docker buildx build -f Dockerfile-deploy -t task-ui .
 echo "Done: task-ui"
 """
 
@@ -288,3 +291,14 @@ run = "echo 'All tests completed'"
 [tasks.test-welcome]
 description = "Run welcome package tests"
 run = "cd packages/welcome && uv run pytest -v"
+
+[tasks.k8s-create-cluster]
+description = "Create kubernetes cluster"
+run = """
+kind create cluster --name uv-monorepo --config kind-config.yaml
+kubectl cluster-info --context kind-uv-monorepo
+"""
+
+[tasks.k8s-load-containers]
+description = "Load docker images into kind cluster"
+run = "kind load docker-image api-1 api-2 task-ui --name uv-monorepo"

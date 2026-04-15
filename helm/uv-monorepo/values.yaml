@@ -1,0 +1,44 @@
+api1:
+  name: api-1
+  image: api-1
+  tag: latest
+  replicas: 1
+  port: 80
+  nodePort: 30081
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
+
+api2:
+  name: api-2
+  image: api-2
+  tag: latest
+  replicas: 1
+  port: 80
+  nodePort: 30082
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
+
+ui:
+  name: task-ui
+  image: task-ui
+  tag: latest
+  replicas: 1
+  port: 80
+  nodePort: 30080
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 150m
+      memory: 128Mi

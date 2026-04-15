@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.ui.name }}-service
+  labels:
+    {{- include "uv-monorepo.labels" . | nindent 4 }}
+    {{- include "uv-monorepo.selectorLabels" .Values.ui.name | nindent 4 }}
+spec:
+  type: NodePort
+  selector:
+    {{- include "uv-monorepo.selectorLabels" .Values.ui.name | nindent 4 }}
+  ports:
+    - port: {{ .Values.ui.port }}
+      targetPort: {{ .Values.ui.port }}
+      nodePort: {{ .Values.ui.nodePort }}
+      protocol: TCP
