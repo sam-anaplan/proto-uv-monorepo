@@ -37,7 +37,7 @@ $ <span class="blinking-cursor">_</span>
                 <label
                     id="hide-completed-tasks"
                     class="text-sm mr-4 font-extralight italic"
-                    >Hide completed tasks</label
+                    >Hide completed tasks, innit</label
                 >
                 <input
                     for="hide-completed-tasks"

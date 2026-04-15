@@ -1,20 +1,12 @@
 FROM python:3.12-slim
 
-# Install uv.
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-# Copy the application into the container
-COPY *.whl ./
-COPY dist/*.whl ./
+COPY packages/welcome /packages/welcome
 
-COPY pyproject.toml uv.lock ./
+COPY api-1 /app
+WORKDIR /app
 
-# Export dependencies from lock file (ensures same versions as dev)
-RUN uv export --frozen --no-emit-project > requirements.txt
+RUN uv sync --frozen --no-cache
 
-RUN uv pip install --system -r requirements.txt
-
-RUN uv pip install --system ./*.whl
-
-# Run the application (using module path since app is installed from wheel)
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["/app/.venv/bin/uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80", "--reload"]

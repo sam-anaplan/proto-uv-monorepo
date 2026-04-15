@@ -9,6 +9,7 @@ helm = "latest"
 python = "3.12"
 node = "24"
 uv = "latest"
+# tilt = "latest"
 
 [env]
 # Ensure consistent uv behavior
@@ -130,11 +131,10 @@ echo "========================================"
 # ======================
 
 [tasks.build]
-depends = ["build-wheels"]
+depends = ["build-images"]
 run = """
-mise run build-images
 echo "========================================"
-echo "all package wheels and docker images built successfully"
+echo "all docker images built successfully"
 echo "========================================"
 """
 
@@ -172,10 +172,7 @@ run = """
 echo "----------------------------------------"
 echo "Building Docker image: api-1"
 echo "----------------------------------------"
-cp packages/welcome/dist/welcome-0.1.0-py3-none-any.whl api-1
-cd api-1
-uv build --wheel
-docker build --build-context packages=../packages -t api-1 .
+docker build -f api-1/Dockerfile -t api-1 .
 echo "Done: api-1"
 """
 
@@ -232,3 +229,15 @@ run = "helm uninstall uv-monorepo"
 [tasks.k8s-status]
 description = "Show pod and service status"
 run = "kubectl get pods,services"
+
+# ======================
+# Tilt Tasks
+# ======================
+
+[tasks.tilt-up]
+description = "Start Tilt development environment"
+run = "tilt up"
+
+[tasks.tilt-down]
+description = "Stop Tilt development environment"
+run = "tilt down"
