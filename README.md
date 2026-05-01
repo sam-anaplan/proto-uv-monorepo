@@ -24,7 +24,7 @@ Applications are containerised with Docker and deployed to a local Kubernetes cl
 
 ### Using mise (recommended)
 
-[mise](https://mise.jdx.dev/) manages tool versions and provides task automation.
+[mise](https://mise.jdx.dev/) manages tool versions and provides task automation. Like `make` but moreso.
 
 1. Install mise: https://mise.jdx.dev/getting-started.html
 2. From the repo root, run:
@@ -32,8 +32,13 @@ Applications are containerised with Docker and deployed to a local Kubernetes cl
    mise trust
    mise install
    ```
-
 This will install the correct versions of Python, Node.js, uv, kubectl, kind, and helm automatically.
+
+NOTE: I had issues getting `tilt` to install via mise, so this should be done manually:
+
+   ```bash
+   brew install tilt
+   ```
 
 ### Manual setup
 
@@ -45,6 +50,7 @@ If not using mise, install the following manually:
 - **kubectl**: https://kubernetes.io/docs/tasks/tools/
 - **kind**: https://kind.sigs.k8s.io/docs/user/quick-start/#installation
 - **helm**: https://helm.sh/docs/intro/install/
+- **tilt**
 
 ## Building and deploying
 
@@ -57,7 +63,12 @@ mise run setup          # Install all dependencies
 mise run build          # Build all Docker images
 mise run k8s-create     # Create the kind cluster
 mise run k8s-load       # Load images into kind
+
+# to deploy the cluster (static)
 mise run k8s-deploy     # Deploy via Helm
+
+# alternatively, to run via tilt
+tilt up # or `mise tilt-up`, which is more verbose but included for self-documenting purposese
 ```
 
 ### Available tasks
@@ -75,6 +86,8 @@ mise run k8s-deploy     # Deploy via Helm
 | `mise run k8s-deploy` | Deploy (or upgrade) to Kubernetes via Helm |
 | `mise run k8s-status` | Show pod and service status |
 | `mise run k8s-teardown` | Uninstall the Helm release |
+| `mise run tilt-up` | Start tilt dev environment|
+| `mise run tilt-down` | Stop tilt dev environment |
 
 ### Build tasks
 
